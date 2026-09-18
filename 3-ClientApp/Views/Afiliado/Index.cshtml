@@ -1,31 +1,76 @@
-@model List<SSF.PortalBI.DTOs.AfiliadoDto>
-
+@model SSF.PortalBI.DTOs.PagedResultDto<SSF.PortalBI.DTOs.AfiliadoDto>
 @{
     ViewData["Title"] = "Afiliados";
 }
 
 <h2>Listado de Afiliados</h2>
 
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="busqueda" value="@ViewData["Busqueda"]" class="form-control" placeholder="Documento, NUP o nombre..." />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+    </div>
+</form>
+
+<p class="text-muted">@Model.TotalRegistros registros encontrados - pagina @Model.PaginaActual de @Model.TotalPaginas</p>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Documento</th>
+            <th>NUP</th>
             <th>Nombre completo</th>
             <th>Fecha nacimiento</th>
             <th>Genero</th>
-            <th>Estado</th>
+            <th>Estado civil</th>
+            <th>Estado afiliado</th>
+            <th>Tipo afiliado</th>
+            <th>Fecha afiliacion</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var a in Model)
+        @foreach (var a in Model.Items)
         {
             <tr>
                 <td>@a.NumeroDocumento</td>
+                <td>@a.Nup</td>
                 <td>@a.PrimerNombre @a.SegundoNombre @a.PrimerApellido @a.SegundoApellido</td>
                 <td>@a.FechaNacimiento</td>
                 <td>@a.Genero</td>
+                <td>@a.EstadoFamiliar</td>
                 <td>@a.EstadoAfiliado</td>
+                <td>@a.TipoAfiliado</td>
+                <td>@a.FechaAfiliacion</td>
             </tr>
         }
     </tbody>
 </table>
+
+@if (Model.TotalPaginas > 1)
+{
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.PaginaActual <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pagina="@(Model.PaginaActual - 1)" asp-route-busqueda="@ViewData["Busqueda"]">Anterior</a>
+            </li>
+
+            @{
+                var inicio = Math.Max(1, Model.PaginaActual - 3);
+                var fin = Math.Min(Model.TotalPaginas, Model.PaginaActual + 3);
+            }
+
+            @for (int p = inicio; p <= fin; p++)
+            {
+                <li class="page-item @(p == Model.PaginaActual ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pagina="@p" asp-route-busqueda="@ViewData["Busqueda"]">@p</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PaginaActual >= Model.TotalPaginas ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pagina="@(Model.PaginaActual + 1)" asp-route-busqueda="@ViewData["Busqueda"]">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+}

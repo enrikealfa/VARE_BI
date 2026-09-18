@@ -13,9 +13,29 @@ namespace SSF.PortalBI.Services
             _context = context;
         }
 
-        public async Task<List<AfiliadoDto>> ObtenerTodosAsync()
+        public async Task<PagedResultDto<AfiliadoDto>> ObtenerPaginadoAsync(int pagina, int tamanoPagina, string? busqueda)
         {
-            return await _context.Afiliados
+            if (pagina < 1) pagina = 1;
+            if (tamanoPagina < 1 || tamanoPagina > 200) tamanoPagina = 25;
+
+            var query = _context.Afiliados.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(busqueda))
+            {
+                var texto = busqueda.Trim();
+                query = query.Where(a =>
+                    a.NumeroDocumento.Contains(texto) ||
+                    a.PrimerNombre.Contains(texto) ||
+                    a.PrimerApellido.Contains(texto) ||
+                    (a.Nup != null && a.Nup.Contains(texto)));
+            }
+
+            var total = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(a => a.PrimerApellido).ThenBy(a => a.PrimerNombre)
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
                 .Select(a => new AfiliadoDto
                 {
                     IdAfiliado = a.IdAfiliado,
@@ -30,15 +50,44 @@ namespace SSF.PortalBI.Services
                     EstadoFamiliar = a.EstadoFamiliar,
                     EstadoAfiliado = a.EstadoAfiliado,
                     CodigoPais = a.CodigoPais,
-                    IdTipoSistema = a.IdTipoSistema
+                    IdTipoSistema = a.IdTipoSistema,
+                    Nup = a.Nup,
+                    Dui = a.Dui,
+                    Nit = a.Nit,
+                    TipoAfiliado = a.TipoAfiliado,
+                    FechaAfiliacion = a.FechaAfiliacion
                 })
                 .ToListAsync();
+
+            return new PagedResultDto<AfiliadoDto>
+            {
+                Items = items,
+                PaginaActual = pagina,
+                TamanoPagina = tamanoPagina,
+                TotalRegistros = total
+            };
         }
 
         public async Task<AfiliadoDto?> ObtenerPorIdAsync(int idAfiliado)
         {
-            var lista = await ObtenerTodosAsync();
-            return lista.FirstOrDefault(a => a.IdAfiliado == idAfiliado);
+            var resultado = await ObtenerPaginadoAsync(1, 1, null);
+            return await _context.Afiliados
+                .Where(a => a.IdAfiliado == idAfiliado)
+                .Select(a => new AfiliadoDto
+                {
+                    IdAfiliado = a.IdAfiliado,
+                    NumeroDocumento = a.NumeroDocumento,
+                    PrimerNombre = a.PrimerNombre,
+                    PrimerApellido = a.PrimerApellido,
+                    FechaNacimiento = a.FechaNacimiento,
+                    Genero = a.Genero,
+                    EstadoFamiliar = a.EstadoFamiliar,
+                    EstadoAfiliado = a.EstadoAfiliado,
+                    Nup = a.Nup,
+                    Dui = a.Dui,
+                    Nit = a.Nit
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

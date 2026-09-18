@@ -4,7 +4,7 @@ namespace SSF.PortalBI.Services
 {
     public interface IAfiliadoService
     {
-        Task<List<AfiliadoDto>> ObtenerTodosAsync();
+        Task<PagedResultDto<AfiliadoDto>> ObtenerPaginadoAsync(int pagina, int tamanoPagina, string? busqueda);
         Task<AfiliadoDto?> ObtenerPorIdAsync(int idAfiliado);
     }
 }

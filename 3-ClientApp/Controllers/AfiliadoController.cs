@@ -14,10 +14,11 @@ namespace SSF.PortalBI.Web.Controllers
             _afiliadoService = afiliadoService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pagina = 1, string? busqueda = null)
         {
-            var afiliados = await _afiliadoService.ObtenerTodosAsync();
-            return View(afiliados);
+            var resultado = await _afiliadoService.ObtenerPaginadoAsync(pagina, 25, busqueda);
+            ViewData["Busqueda"] = busqueda;
+            return View(resultado);
         }
     }
 }

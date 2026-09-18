@@ -15,5 +15,10 @@ namespace SSF.PortalBI.DTOs
         public string EstadoAfiliado { get; set; } = string.Empty;
         public string CodigoPais { get; set; } = string.Empty;
         public int IdTipoSistema { get; set; }
+        public string? Nup { get; set; }
+        public string? Dui { get; set; }
+        public string? Nit { get; set; }
+        public string? TipoAfiliado { get; set; }
+        public DateOnly? FechaAfiliacion { get; set; }
     }
 }
