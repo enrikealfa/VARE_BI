@@ -1,0 +1,16 @@
+@model List<SSF.PortalBI.DTOs.EmpleadorDto>
+@{ ViewData["Title"] = "Empleadores"; }
+<h2>Listado de Empleadores</h2>
+<table class="table table-striped">
+    <thead><tr><th>NIT</th><th>Razon social</th><th>Centro de trabajo</th></tr></thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Nit</td>
+                <td>@e.RazonSocial @e.PrimerNombre @e.PrimerApellido</td>
+                <td>@e.CodigoCentroTrabajo - @e.NombreCentroTrabajo</td>
+            </tr>
+        }
+    </tbody>
+</table>

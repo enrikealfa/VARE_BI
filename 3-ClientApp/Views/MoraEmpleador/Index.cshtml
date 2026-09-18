@@ -1,0 +1,18 @@
+@model List<SSF.PortalBI.DTOs.MoraEmpleadorDto>
+@{ ViewData["Title"] = "Mora de Empleadores"; }
+<h2>Listado de Mora de Empleadores</h2>
+<table class="table table-striped">
+    <thead><tr><th>NIT</th><th>Monto Omis.</th><th>Monto DNP</th><th>Monto INS</th><th>Total Mora</th></tr></thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Nit</td>
+                <td>@m.MontoOmis.ToString("N2")</td>
+                <td>@m.MontoDnp.ToString("N2")</td>
+                <td>@m.MontoIns.ToString("N2")</td>
+                <td>@m.TotalMora.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

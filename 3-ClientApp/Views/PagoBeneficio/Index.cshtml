@@ -1,0 +1,17 @@
+@model List<SSF.PortalBI.DTOs.PagoBeneficioDto>
+@{ ViewData["Title"] = "Pagos de Beneficio"; }
+<h2>Listado de Pagos de Beneficio</h2>
+<table class="table table-striped">
+    <thead><tr><th>Documento</th><th>Beneficiario</th><th>Fecha pago</th><th>Monto pagado</th></tr></thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.NumeroDocumento</td>
+                <td>@p.CodigoBeneficiario</td>
+                <td>@p.FechaPago</td>
+                <td>@p.MontoPagado.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

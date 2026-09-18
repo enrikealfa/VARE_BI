@@ -1,0 +1,17 @@
+@model List<SSF.PortalBI.DTOs.ReintegroAnticipoDto>
+@{ ViewData["Title"] = "Reintegros de Anticipo"; }
+<h2>Listado de Reintegros de Anticipo</h2>
+<table class="table table-striped">
+    <thead><tr><th>NUP</th><th>Expediente</th><th>Fecha reintegro</th><th>Monto</th></tr></thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.NumeroUnicoPrevisional</td>
+                <td>@r.NumeroExpediente</td>
+                <td>@r.FechaReintegro</td>
+                <td>@r.MontoReintegro?.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

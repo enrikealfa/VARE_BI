@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSF.PortalBI.Services;
 
 namespace SSF.PortalBI.Web.Controllers
 {
+    [Authorize]
     public class AfiliadoController : Controller
     {
         private readonly IAfiliadoService _afiliadoService;
