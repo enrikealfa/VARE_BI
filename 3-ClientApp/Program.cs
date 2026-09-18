@@ -21,6 +21,7 @@ builder.Services.AddScoped<IMoraEmpleadorService, MoraEmpleadorService>();
 builder.Services.AddScoped<IPrestacionService, PrestacionService>();
 builder.Services.AddScoped<IPagoBeneficioService, PagoBeneficioService>();
 builder.Services.AddScoped<IReintegroAnticipoService, ReintegroAnticipoService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Autenticacion por cookies

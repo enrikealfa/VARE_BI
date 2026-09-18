@@ -1,0 +1,45 @@
+@model SSF.PortalBI.DTOs.UsuarioCreateDto
+@{ ViewData["Title"] = "Nuevo usuario"; }
+
+<h2>Nuevo usuario</h2>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="NombreUsuario" class="form-label"></label>
+        <input asp-for="NombreUsuario" class="form-control" />
+        <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Correo" class="form-label"></label>
+        <input asp-for="Correo" class="form-control" />
+        <span asp-validation-for="Correo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NombreCompleto" class="form-label"></label>
+        <input asp-for="NombreCompleto" class="form-control" />
+        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Clave" class="form-label"></label>
+        <input asp-for="Clave" type="password" class="form-control" />
+        <span asp-validation-for="Clave" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ConfirmarClave" class="form-label"></label>
+        <input asp-for="ConfirmarClave" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmarClave" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Roles</label>
+        @for (int i = 0; i < Model.RolesDisponibles.Count; i++)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="RolesSeleccionados" value="@Model.RolesDisponibles[i].IdRol" id="rol_@Model.RolesDisponibles[i].IdRol" />
+                <label class="form-check-label" for="rol_@Model.RolesDisponibles[i].IdRol">@Model.RolesDisponibles[i].NombreRol</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
