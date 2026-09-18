@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/0-DTOs/">
+    <Project Path="0-DTOs/SSF.PortalBI.DTOs.csproj" />
+  </Folder>
+  <Folder Name="/1-Services/">
+    <Project Path="1-Services/SSF.PortalBI.Services.csproj" />
+  </Folder>
+  <Folder Name="/2-BusinessClass/">
+    <Project Path="2-BusinessClass/SSF.PortalBI.BusinessClass.csproj" />
+  </Folder>
+  <Folder Name="/3-ClientApp/">
+    <Project Path="3-ClientApp/SSF.PortalBI.Web.csproj" />
+  </Folder>
+</Solution>
