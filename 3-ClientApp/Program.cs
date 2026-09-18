@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SSF.PortalBI.BusinessClass.Context;
 using SSF.PortalBI.BusinessClass.Seed;
 using SSF.PortalBI.Services;
+using SSF.PortalBI.Services.Infraestructura;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,23 @@ builder.Services.AddDbContext<SsfBcpeBiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registro de servicios de negocio
+
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 3_221_225_472; // 3 GB
+});
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 3_221_225_472;
+    options.ValueLengthLimit = int.MaxValue;
+});
+
+builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+builder.Services.AddHostedService<QueuedHostedService>();
+builder.Services.AddScoped<ICargaArchivoService, CargaArchivoService>();
+builder.Services.AddScoped<ICargaArchivoProcesadorService, CargaArchivoProcesadorService>();
 builder.Services.AddScoped<IAfiliadoService, AfiliadoService>();
 builder.Services.AddScoped<IEmpleadorService, EmpleadorService>();
 builder.Services.AddScoped<ICotizanteService, CotizanteService>();

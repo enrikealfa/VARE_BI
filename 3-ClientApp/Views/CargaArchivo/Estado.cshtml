@@ -1,0 +1,41 @@
+@model SSF.PortalBI.DTOs.CargaArchivoEstadoDto
+@{ ViewData["Title"] = "Estado de Carga"; }
+
+<h2>Estado de la carga #@Model.IdCargaArchivo</h2>
+<p><strong>Archivo:</strong> @Model.NombreArchivo</p>
+<p><strong>Tipo:</strong> @Model.TipoEntidad</p>
+
+<div id="estado-panel" class="card">
+    <div class="card-body">
+        <h5>Estado: <span id="estado-valor">@Model.Estado</span></h5>
+        <p>Total registros: <span id="total-valor">@Model.TotalRegistros</span></p>
+        <p>Correctos: <span id="correctos-valor">@Model.RegistrosCorrectos</span></p>
+        <p>Errores: <span id="errores-valor">@Model.RegistrosError</span></p>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver al historial</a>
+
+@section Scripts {
+<script>
+    const idCarga = @Model.IdCargaArchivo;
+    const estadosFinales = ["COMPLETADO", "COMPLETADO_CON_ERRORES", "ERROR"];
+
+    function consultarEstado() {
+        fetch(`/CargaArchivo/EstadoJson/${idCarga}`)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('estado-valor').textContent = data.estado;
+                document.getElementById('total-valor').textContent = data.totalRegistros ?? '-';
+                document.getElementById('correctos-valor').textContent = data.registrosCorrectos ?? '-';
+                document.getElementById('errores-valor').textContent = data.registrosError ?? '-';
+
+                if (!estadosFinales.includes(data.estado)) {
+                    setTimeout(consultarEstado, 3000);
+                }
+            });
+    }
+
+    setTimeout(consultarEstado, 3000);
+</script>
+}

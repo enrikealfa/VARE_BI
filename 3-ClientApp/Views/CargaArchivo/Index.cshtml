@@ -1,0 +1,57 @@
+@model List<SSF.PortalBI.DTOs.CargaArchivoResumenDto>
+@{ ViewData["Title"] = "Carga de Archivos"; }
+
+<h2>Carga de Archivos SSF</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Nueva carga</h5>
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">Tipo de entidad</label>
+                <select name="tipoEntidad" class="form-select" required>
+                    <option value="">-- Selecciona --</option>
+                    <option value="afiliado">Afiliado</option>
+                    <option value="empleador">Empleador</option>
+                    <option value="cotizante">Cotizante</option>
+                    <option value="mora_empleador">Mora de Empleador</option>
+                    <option value="prestacion">Prestacion</option>
+                    <option value="pago_beneficio">Pago de Beneficio</option>
+                    <option value="reintegro_anticipo">Reintegro de Anticipo</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Archivo (.xml o .zip)</label>
+                <input type="file" name="archivo" class="form-control" accept=".xml,.zip" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Cargar</button>
+        </form>
+    </div>
+</div>
+
+<h5>Historial de cargas</h5>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Archivo</th><th>Tipo</th><th>Estado</th><th>Fecha</th><th>Total</th><th>OK</th><th>Errores</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.NombreArchivo</td>
+                <td>@c.TipoEntidad</td>
+                <td>@c.Estado</td>
+                <td>@c.FechaCarga</td>
+                <td>@c.TotalRegistros</td>
+                <td>@c.RegistrosCorrectos</td>
+                <td>@c.RegistrosError</td>
+                <td><a asp-action="Estado" asp-route-id="@c.IdCargaArchivo" class="btn btn-sm btn-outline-primary">Ver</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
