@@ -1,7 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using SSF.PortalBI.BusinessClass.Context;
+using SSF.PortalBI.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Conexion a la base de datos SSF_BCPE_BI (LocalDB)
+builder.Services.AddDbContext<SsfBcpeBiContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registro de servicios de negocio
+builder.Services.AddScoped<IAfiliadoService, AfiliadoService>();
 
 var app = builder.Build();
 

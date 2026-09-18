@@ -1,0 +1,31 @@
+@model List<SSF.PortalBI.DTOs.AfiliadoDto>
+
+@{
+    ViewData["Title"] = "Afiliados";
+}
+
+<h2>Listado de Afiliados</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Documento</th>
+            <th>Nombre completo</th>
+            <th>Fecha nacimiento</th>
+            <th>Genero</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>@a.NumeroDocumento</td>
+                <td>@a.PrimerNombre @a.SegundoNombre @a.PrimerApellido @a.SegundoApellido</td>
+                <td>@a.FechaNacimiento</td>
+                <td>@a.Genero</td>
+                <td>@a.EstadoAfiliado</td>
+            </tr>
+        }
+    </tbody>
+</table>
